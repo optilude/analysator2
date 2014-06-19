@@ -1,4 +1,4 @@
-/* global moment, Morris, bootbox, Collections, Models */
+/* global moment, Morris, Models */
 "use strict";
 
 /*
@@ -59,7 +59,13 @@ Template.chart.rendered = function() {
 
     var template = this;
 
-    Deps.autorun(function() {
+    Deps.autorun(function(c) {
+
+        // Stop if the template is removed from the dom
+        if(template.__component__.dom.parentNode() === null) {
+            c.stop();
+            return;
+        }
 
         var currentAnalysis = Models.Analysis.getCurrent(),
             results = Session.get('currentData'),
@@ -86,4 +92,3 @@ Template.chart.rendered = function() {
     });
 
 };
-

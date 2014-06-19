@@ -1,8 +1,8 @@
-/* global Collections, Models, Utils */
+/* global Collections, Models */
 "use strict";
 
 /*
- * Analysis models
+ * Model helpers
  */
 
 Models.Analysis = {
@@ -32,15 +32,12 @@ Collections.Analyses = new Meteor.Collection("Analyses");
 
 Collections.Analyses.allow({
     insert: function(userId, doc) {
-        // cannot insert with another owner
         return (userId && doc.owner === userId);
     },
     update: function (userId, doc, fields, modifier) {
-        // can only change your own documents
         return doc.owner === userId;
     },
     remove: function (userId, doc) {
-        // can only remove your own documents
         return doc.owner === userId;
     },
     fetch: ['owner']
@@ -48,13 +45,13 @@ Collections.Analyses.allow({
 
 Collections.Analyses.deny({
     update: function (userId, docs, fields, modifier) {
-        // can't change owners
+        // Don't allow updates that attempt to change the owner
         return _.contains(fields, 'owner');
     }
 });
 
 /*
- * Publications
+ * Publications/subscriptions
  */
 
 if(Meteor.isServer) {

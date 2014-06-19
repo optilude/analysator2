@@ -12,9 +12,25 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
+</head>
 
-<body>
+<template name="layout">
 
+    {{> header }}
 
-</body>
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-sm-2 col-md-2 sidebar">
+                {{> sidebar }}
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                {{> yield }}
+            </div>
+        </div>
+
+    </div>
+
+    {{> yield region='footer'}}
+
+</template>

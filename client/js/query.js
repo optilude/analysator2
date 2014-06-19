@@ -1,4 +1,4 @@
-/* global moment, Morris, bootbox, Collections, Models */
+/* global moment, bootbox, Collections, Models */
 "use strict";
 
 Template.parameters.helpers({
@@ -23,12 +23,23 @@ Template.parameters.events = {
         var currentAnalysis = Models.Analysis.getCurrent();
         currentAnalysis.connectionString = template.$(".connectionString").val();
         Models.Analysis.setCurrent(currentAnalysis);
+
+        // cache connection string for new analysis
+        if(!currentAnalysis._id) {
+            localStorage.defaultConnectionString = currentAnalysis.connectionString;
+        }
+
     },
 
     'change .query' : function(event, template) {
         var currentAnalysis = Models.Analysis.getCurrent();
         currentAnalysis.query = template.$(".query").val();
         Models.Analysis.setCurrent(currentAnalysis);
+
+        // cache query for new analysis
+        if(!currentAnalysis._id) {
+            localStorage.deafultQuery = currentAnalysis.query;
+        }
     },
 
     'click .run' : function(event, template) {

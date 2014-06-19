@@ -1,4 +1,4 @@
-/* global moment, Morris, bootbox, Collections, Models */
+/* global Collections, Models */
 "use strict";
 
 Template.sidebar.helpers({

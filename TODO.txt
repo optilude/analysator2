@@ -1,14 +1,16 @@
 Features
 --------
 
-[ ] Force login if attempting to access /new-analysis or /analysis/:_id
-[ ] Show 404 page if invalid analysis
+[ ] Analysis sharing
 
 Bugs
 ----
+
+[ ] Configure chart stopped working?
 
 
 Architecture
 ------------
 
 [ ] Use Collection2 to define a schema?
+[ ] Unit tests
