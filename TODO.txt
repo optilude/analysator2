@@ -6,9 +6,6 @@ Features
 Bugs
 ----
 
-[ ] Configure chart stopped working?
-
-
 Architecture
 ------------
 

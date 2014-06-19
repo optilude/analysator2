@@ -52,7 +52,7 @@ Router.map(function() {
         template: 'analysis',
         path: '/analysis/:_id',
         yieldTemplates: {
-            footer: {to: 'configureChart'}
+            configureChart: {to: 'footer'}
         },
         onRun: function() {
             Session.set('currentData', null);
