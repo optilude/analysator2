@@ -7,13 +7,13 @@ Template.parameters.helpers({
         return !Boolean(currentData);
     },
     disableSave: function() {
-        return !Boolean(Session.get('currentAnalysisId'));
+        return !Boolean(Session.get('currentAnalysis')._id);
     },
     disableSaveAs: function() {
-        return !Boolean(Session.get('currentAnalysisId'));
+        return !Boolean(Session.get('currentAnalysis')._id);
     },
     disableDelete: function() {
-        return !Boolean(Session.get('currentAnalysisId'));
+        return !Boolean(Session.get('currentAnalysis')._id);
     }
 });
 
@@ -66,10 +66,9 @@ Template.parameters.events = {
     },
 
     'click .save' : function(event, template) {
-        var currentAnalysisId = Session.get('currentAnalysisId'),
-            currentAnalysis = Models.Analysis.getCurrent();
+        var currentAnalysis = Models.Analysis.getCurrent();
 
-        Collections.Analyses.update(currentAnalysisId, {
+        Collections.Analyses.update(currentAnalysis._id, {
             $set: _.omit(currentAnalysis, '_id', 'owner')
         }, {}, function(err) {
             if(err) {
@@ -80,8 +79,7 @@ Template.parameters.events = {
     },
 
     'click .save-as' : function(event, template) {
-        var currentAnalysisId = Session.get('currentAnalysisId'),
-            currentAnalysis = Models.Analysis.getCurrent();
+        var currentAnalysis = Models.Analysis.getCurrent();
 
         bootbox.prompt("Please choose a name", function(newName) {
             if(!newName) {
@@ -104,12 +102,11 @@ Template.parameters.events = {
     },
 
     'click .delete' : function(event, template) {
-        var currentAnalysisId = Session.get('currentAnalysisId'),
-            currentAnalysis = Models.Analysis.getCurrent();
+        var currentAnalysis = Models.Analysis.getCurrent();
 
         bootbox.confirm("Are you sure you want to delete the analysis '" + currentAnalysis.name + "'?", function(result) {
             if(result) {
-                Collections.Analyses.remove(currentAnalysisId, function(err, count) {
+                Collections.Analyses.remove(currentAnalysis._id, function(err, count) {
                     if(err) {
                         alert("Unexpected error deleting record: " + err);
                         return;

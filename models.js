@@ -24,7 +24,6 @@ Models.Analysis = {
 
     setCurrent: function(analysis) {
         Session.set('currentAnalysis', analysis? analysis : null);
-        Session.set('currentAnalysisId', analysis && analysis._id? analysis._id : null);
     }
 };
 
