@@ -1,0 +1,75 @@
+<template name="configureChart">
+    <div class="modal fade chartModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Chart settings</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="chartType">Chart type</label>
+                            <select class="form-control chartType">
+                                <option value="" default>(No chart)</option>
+                                <option value="Line">Line chart</option>
+                                <option value="Area">Area chart</option>
+                                <option value="Bar">Bar chart</option>
+                                <option value="Donut">Donut chart</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="xkey">Keys (X axis)</label>
+                            <input type="hidden" class="form-control xkey" />
+                        </div>
+                        <div class="form-group">
+                            <label for="ykeys">Series (Y axis)</label>
+                            <input type="hidden" class="form-control ykeys" />
+                        </div>
+                        <div class="form-group">
+                            <label for="goals">Goal lines (horizontal) &mdash; line and area chart only</label>
+                            <input type="text" class="form-control goals" placeholder="1.0, -0.5" value="{{chartSettings.goals}}" />
+                        </div>
+                        <div class="form-group">
+                            <label for="events">Event lines vertical &mdash; line and area chart only</label>
+                            <input type="text" class="form-control events" placeholder="2014-01-01, 2014-02-01" value="{{chartSettings.events}}" />
+                        </div>
+                        <div class="form-group">
+                            <label for="preUnits">Units (pre)</label>
+                            <input type="text" class="form-control preUnits" placeholder="£" value="{{chartSettings.preUnits}}"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="postUnits">Units (post)</label>
+                            <input type="text" class="form-control postUnits" placeholder="hrs" value="{{chartSettings.postUnits}}" />
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input class="smoothLines" type="checkbox" checked="{{chartSettings.smoothLines}}" /> Smooth lines (line and area chart only)
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input class="parseTime" type="checkbox" checked="{{chartSettings.parseTime}}" /> Time series (line and area chart only)
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input class="stacked" type="checkbox" checked="{{chartSettings.stacked}}" /> Stacked (bar chart only)
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="chart">
+    <div class="chart-container" hidden>
+        <h2 class="sub-header">Chart</h2>
+        <div class="chart-area" style="height: 300px;"></div>
+    </div>
+</template>

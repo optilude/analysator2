@@ -1,0 +1,14 @@
+Features
+--------
+
+[ ] Force login if attempting to access /new-analysis or /analysis/:_id
+[ ] Show 404 page if invalid analysis
+
+Bugs
+----
+
+
+Architecture
+------------
+
+[ ] Use Collection2 to define a schema?

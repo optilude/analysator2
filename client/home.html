@@ -1,0 +1,28 @@
+<template name="home">
+
+    {{> header }}
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-sm-2 col-md-2 sidebar">
+                {{> sidebar }}
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                {{#if currentUser}}
+                    <h1 class="page-header">Analysator</h1>
+                    <p>
+                        Please choose a saved analysis on the left.
+                </p>
+                {{else }}
+                    <h1 class="page-header">Login required</h1>
+                    <p>
+                        Please log in before proceeding.
+                    </p>
+                {{/if}}
+            </div>
+        </div>
+
+    </div>
+
+</template>
