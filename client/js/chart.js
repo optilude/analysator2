@@ -25,7 +25,7 @@ Template.configureChart.rendered = function() {
     template.$(".xkey").select2({data: currentDataKeys});
     template.$(".ykeys").select2({data: currentDataKeys, multiple: true});
 
-    Deps.autorun(function() {
+    this.setupComputation = Deps.autorun(function() {
         var currentAnalysis = Models.Analysis.getCurrent();
 
         template.$(".chartType").select2('val', currentAnalysis.chartSettings.type);
@@ -51,6 +51,12 @@ Template.configureChart.rendered = function() {
     });
 };
 
+Template.configureChart.destroyed = function() {
+    if(this.setupComputation) {
+        this.setupComputation.stop();
+    }
+};
+
 /*
  * Chart area
  */
@@ -59,13 +65,7 @@ Template.chart.rendered = function() {
 
     var template = this;
 
-    Deps.autorun(function(c) {
-
-        // Stop if the template is removed from the dom
-        if(template.__component__.dom.parentNode() === null) {
-            c.stop();
-            return;
-        }
+    this.chartComputation = Deps.autorun(function(computation) {
 
         var currentAnalysis = Models.Analysis.getCurrent(),
             results = Session.get('currentData'),
@@ -91,4 +91,10 @@ Template.chart.rendered = function() {
 
     });
 
+};
+
+Template.chart.destroyed = function() {
+    if(this.chartComputation) {
+        this.chartComputation.stop();
+    }
 };
