@@ -1,13 +1,13 @@
 <template name="parameters">
     <form class="form-horizontal parameters-form" role="form">
-        <div class="form-group">
+        <div class="form-group {{validationStatus field='connectionString'}}">
             <label class="col-md-1 control-label" for="connectionString">Connection</label>
             <div class="col-md-5">
                 <input type="text" name="connectionString" class="form-control connectionString" placeholder="postgres://user:password@host/db" value="{{connectionString}}"/>
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group {{validationStatus field='query'}}">
             <label class="col-md-1 control-label" for="query">Query</label>
             <div class="col-md-11">
                 <textarea name="query" class="form-control query" placeholder="SELECT * FROM table">{{query}}</textarea>

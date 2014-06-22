@@ -1,4 +1,4 @@
-/* global moment, bootbox, Collections, Models */
+/* global moment, bootbox, Collections, Models, Schemata */
 "use strict";
 
 Template.parameters.helpers({
@@ -7,13 +7,21 @@ Template.parameters.helpers({
         return !Boolean(currentData);
     },
     disableSave: function() {
-        return !Boolean(Session.get('currentAnalysis')._id);
+        var currentAnalysis = Session.get('currentAnalysis');
+        return !currentAnalysis || !currentAnalysis._id;
     },
     disableSaveAs: function() {
-        return !Boolean(Session.get('currentAnalysis')._id);
+        var currentAnalysis = Session.get('currentAnalysis');
+        return !currentAnalysis || !currentAnalysis._id;
     },
     disableDelete: function() {
-        return !Boolean(Session.get('currentAnalysis')._id);
+        var currentAnalysis = Session.get('currentAnalysis');
+        return !currentAnalysis || !currentAnalysis._id;
+    },
+    validationStatus: function(kw) {
+        var currentAnalysis = Session.get('currentAnalysis');
+        return (currentAnalysis && Schemata.Analysis.namedContext().validateOne(currentAnalysis, kw.hash.field))?
+            "" : "has-error";
     }
 });
 
@@ -52,7 +60,7 @@ Template.parameters.events = {
 
         Meteor.call("queryDatabase", currentAnalysis.connectionString, currentAnalysis.query, function(err, results) {
             if(err) {
-                alert(err.reason);
+                bootbox.alert(err.reason);
                 return;
             }
 
@@ -66,10 +74,24 @@ Template.parameters.events = {
     },
 
     'click .save' : function(event, template) {
-        var currentAnalysis = Models.Analysis.getCurrent();
+        var currentAnalysis = Models.Analysis.getCurrent(),
+            omit = ['_id'];
 
+        // it's possible that we have only partly populated chart settings;
+        // in this case, don't save them
+
+        if(!currentAnalysis.chartSettings || !Schemata.ChartSettings.namedContext().validate(currentAnalysis.chartSettings)) {
+            omit.push('chartSettings');
+        }
+
+        if(!Schemata.Analysis.namedContext().validate(_.omit(currentAnalysis, omit))) {
+            bootbox.alert("Invalid analysis: " + _.pluck(Schemata.Analysis.namedContext().invalidKeys(), 'message').join('; '));
+            return;
+        }
+
+        omit.push('owner');
         Collections.Analyses.update(currentAnalysis._id, {
-            $set: _.omit(currentAnalysis, '_id', 'owner')
+            $set: _.omit(currentAnalysis, omit)
         }, {}, function(err) {
             if(err) {
                 alert("Unexpected error updating record: " + err);
@@ -79,15 +101,29 @@ Template.parameters.events = {
     },
 
     'click .save-as' : function(event, template) {
-        var currentAnalysis = Models.Analysis.getCurrent();
+        var currentAnalysis = Models.Analysis.getCurrent(),
+            omit = ['_id'];
 
-        bootbox.prompt("Please choose a name", function(newName) {
+        // it's possible that we have only partly populated chart settings;
+        // in this case, don't save them
+
+        if(!currentAnalysis.chartSettings || !Schemata.ChartSettings.namedContext().validate(currentAnalysis.chartSettings)) {
+            omit.push('chartSettings');
+        }
+
+        // validate, but don't fail due to a missing name
+        if(!Schemata.Analysis.namedContext().validate(_.extend(_.omit(currentAnalysis, omit), {name: 'temp'}))) {
+            bootbox.alert("Invalid analysis: " + _.pluck(Schemata.Analysis.namedContext().invalidKeys(), 'message').join('; '));
+            return;
+        }
+
+        omit.push('owner');bootbox.prompt("Please choose a name", function(newName) {
             if(!newName) {
                 return;
             }
 
-            var newAnalysis = Models.Analysis.create(_.extend(currentAnalysis, {name: newName}));
-            Collections.Analyses.insert(_.clone(newAnalysis), function(err, id) {
+            var newAnalysis = Models.Analysis.create(_.extend(_.omit(currentAnalysis, omit), {name: newName}));
+            Collections.Analyses.insert(newAnalysis, function(err, id) {
                 if(err) {
                     alert("Unexpected error inserting record: " + err);
                     return;

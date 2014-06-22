@@ -8,6 +8,8 @@
     "morris": {},
     "accounts-ui-bootstrap-3": {},
     "postgresql": {},
-    "iron-router": {}
+    "iron-router": {},
+    "collection2": {},
+    "autoform": {}
   }
 }

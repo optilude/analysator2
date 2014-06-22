@@ -2,6 +2,7 @@ Features
 --------
 
 [ ] Analysis sharing
+[ ] Dirty flag when navigating away
 
 Bugs
 ----
@@ -9,5 +10,11 @@ Bugs
 Architecture
 ------------
 
-[ ] Use Collection2 to define a schema?
 [ ] Unit tests
+    [ ] Collection insert/update/delete with valid/invalid schemata
+    [ ] Collection insert/update/delete allow/deny rules
+    [ ] Models.Analysis helper
+    [ ] Routing
+    [ ] Server-side query (mocked?) and validation
+    [ ] Navigation helpers
+    [ ] Query helpers

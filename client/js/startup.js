@@ -15,7 +15,6 @@ Meteor.startup(function() {
         }
 
     });
-
 });
 
 Router.map(function() {
@@ -34,8 +33,11 @@ Router.map(function() {
     });
 
     this.route('new', {
-        template: 'analysis',
         path: '/new-analysis',
+        template: 'analysis',
+        yieldTemplates: {
+            configureChart: {to: 'footer'}
+        },
         onRun: function() {
             Session.set('currentData', null);
             Models.Analysis.setCurrent(Models.Analysis.create({
@@ -49,8 +51,8 @@ Router.map(function() {
     });
 
     this.route('analysis', {
-        template: 'analysis',
         path: '/analysis/:_id',
+        template: 'analysis',
         yieldTemplates: {
             configureChart: {to: 'footer'}
         },

@@ -1,4 +1,4 @@
-/* global moment, Morris, Models */
+/* global moment, Morris, Models, Schemata */
 "use strict";
 
 /*
@@ -28,9 +28,9 @@ Template.configureChart.rendered = function() {
     this.setupComputation = Deps.autorun(function() {
         var currentAnalysis = Models.Analysis.getCurrent();
 
-        template.$(".chartType").select2('val', currentAnalysis.chartSettings.type);
-        template.$(".xkey").select2('val', currentAnalysis.chartSettings.xkey);
-        template.$(".ykeys").select2('val', currentAnalysis.chartSettings.ykeys);
+        template.$(".chartType").select2('val', currentAnalysis.chartSettings? currentAnalysis.chartSettings.type : null);
+        template.$(".xkey").select2('val', currentAnalysis.chartSettings? currentAnalysis.chartSettings.xkey : null);
+        template.$(".ykeys").select2('val', currentAnalysis.chartSettings? currentAnalysis.chartSettings.ykeys: null);
     });
 
     template.$(".chartModal").on('hidden.bs.modal', function() {
@@ -71,7 +71,7 @@ Template.chart.rendered = function() {
             results = Session.get('currentData'),
             chartSettings = currentAnalysis.chartSettings;
 
-        if(!results || !results.rows || !chartSettings || !chartSettings.type) {
+        if(!results || !results.rows || !chartSettings || !Schemata.ChartSettings.namedContext().validate(chartSettings)) {
             template.$(".chart-container").hide();
             return;
         }

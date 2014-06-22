@@ -10,7 +10,9 @@
       "morris": {},
       "accounts-ui-bootstrap-3": {},
       "postgresql": {},
-      "iron-router": {}
+      "iron-router": {},
+      "collection2": {},
+      "autoform": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -58,6 +60,16 @@
         "tag": "v0.7.1",
         "commit": "d1ffb3f06ea4c112132b030f2eb1a70b81675ecb"
       },
+      "collection2": {
+        "git": "https://github.com/aldeed/meteor-collection2.git",
+        "tag": "v0.4.1",
+        "commit": "a9ffc9b285c3af8ad631f9cda4851b0ffc30c5ce"
+      },
+      "autoform": {
+        "git": "https://github.com/aldeed/meteor-autoform.git",
+        "tag": "v0.12.0",
+        "commit": "24b0284425e446f2d88760a81052eefe74a20bbf"
+      },
       "raphael": {
         "git": "https://github.com/chhib/meteor-raphael.git",
         "tag": "v0.0.1",
@@ -67,6 +79,11 @@
         "git": "https://github.com/EventedMind/blaze-layout.git",
         "tag": "v0.2.4",
         "commit": "b40e9b0612329288d75cf52ad14a7da64bb8618f"
+      },
+      "simple-schema": {
+        "git": "https://github.com/aldeed/meteor-simple-schema.git",
+        "tag": "v0.5.1",
+        "commit": "a29956b34d03a4591dbd0eaed9d37009ef48b8db"
       }
     }
   }
