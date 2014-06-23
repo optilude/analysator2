@@ -27,6 +27,10 @@ Template.parameters.helpers({
 
 Template.parameters.events = {
 
+    'change .parameters-form' : function(event, template) {
+        Session.set('dirty', true);
+    },
+
     'change .connectionString' : function(event, template) {
         var currentAnalysis = Models.Analysis.getCurrent();
         currentAnalysis.connectionString = template.$(".connectionString").val();
@@ -36,7 +40,6 @@ Template.parameters.events = {
         if(!currentAnalysis._id) {
             localStorage.defaultConnectionString = currentAnalysis.connectionString;
         }
-
     },
 
     'change .query' : function(event, template) {
@@ -97,6 +100,8 @@ Template.parameters.events = {
                 alert("Unexpected error updating record: " + err);
                 return;
             }
+
+            Session.set('dirty', false);
         });
     },
 

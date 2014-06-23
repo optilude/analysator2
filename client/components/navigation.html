@@ -26,7 +26,10 @@
     </ul>
     <ul class="nav nav-sidebar saved-analyses">
         {{#each savedAnalyses}}
-            <li class="{{active}}"><a href="{{pathFor 'analysis' _id=_id}}">{{name}}</a></li>
+            <li class="{{active}}">
+                <a href="{{pathFor 'analysis' _id=_id}}">{{name}}{{#if active}}{{#if dirty}}*{{/if}}{{/if}}</a>
+
+            </li>
         {{/each}}
     </ul>
     {{/if}}

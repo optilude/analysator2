@@ -2,6 +2,9 @@
 "use strict";
 
 Template.sidebar.helpers({
+    dirty: function() {
+        return Session.get('dirty');
+    },
     newActive: function() {
         var currentRoute = Router.current();
         return currentRoute && currentRoute.route.name === "new"? "active" : null;

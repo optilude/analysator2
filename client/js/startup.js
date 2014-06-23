@@ -3,18 +3,8 @@
 
 Meteor.startup(function() {
     Session.set('currentData', null);
+
     Models.Analysis.setCurrent(null);
-
-    Deps.autorun(function() {
-        var userId = Meteor.userId(),
-            currentRoute = Router.current();
-
-        // Redirect to home page if user is not logged in
-        if(currentRoute && currentRoute.route.name !== 'home' && !userId) {
-            Router.go('home');
-        }
-
-    });
 });
 
 Router.map(function() {
@@ -26,6 +16,26 @@ Router.map(function() {
     });
 
     // Routes
+
+    Router.onBeforeAction(function(pause) {
+        var self = this;
+
+        if (!this.ready()) {
+            return;
+        }
+
+        var userId = Meteor.userId(),
+            currentRoute = Router.current();
+
+        // Redirect to home page if user is not logged in
+        if(currentRoute && currentRoute.route.name !== 'home' && !userId) {
+            pause();
+            Router.go('home');
+            return;
+        }
+
+        Session.set('dirty', false);
+    });
 
     this.route('home', {
         path: '/',
@@ -46,7 +56,14 @@ Router.map(function() {
             }));
         },
         data: function() {
-            return Models.Analysis.getCurrent();
+            var analysis = null;
+
+            // don't re-trigger route each time the current analysis is saved
+            Deps.nonreactive(function() {
+                analysis = Models.Analysis.getCurrent();
+            });
+
+            return analysis;
         }
     });
 
