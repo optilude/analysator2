@@ -6,7 +6,6 @@
                 <input type="text" name="connectionString" class="form-control connectionString" placeholder="postgres://user:password@host/db" value="{{connectionString}}"/>
             </div>
         </div>
-
         <div class="form-group {{validationStatus field='query'}}">
             <label class="col-md-1 control-label" for="query">Query</label>
             <div class="col-md-11">
@@ -16,6 +15,7 @@
         <div class="form-group">
             <div class="col-md-11 col-md-offset-1">
                 <button type="submit" class="btn btn-success run">Run</button>
+                <button type="button" class="btn btn-primary configure-sharing" disabled="{{disableSharing}}">Sharing&hellip;</button>
                 <button type="button" class="btn btn-primary configure-chart" disabled="{{disableConfigureChart}}">Configure chart&hellip;</button>
                 <div class="pull-right">
                     <button type="button" class="btn btn-warning save" disabled="{{disableSave}}">Save</button>
@@ -24,6 +24,13 @@
                 </div>
             </div>
         </div>
+        {{#if sharedBy}}
+            <div class="form-group">
+                <div class="col-md-11 col-md-offset-1">
+                    <div class="pull-right">(shared by <span name="sharedBy">{{sharedBy}}</span>)</div>
+                </div>
+            </div>
+        {{/if}}
     </form>
 </template>
 
@@ -49,4 +56,9 @@
             </tbody>
         </table>
     </div>
+</template>
+
+<template name="analysisFooter">
+    {{> configureChart }}
+    {{> sharing }}
 </template>

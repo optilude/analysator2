@@ -2,21 +2,49 @@
 "use strict";
 
 Template.parameters.helpers({
+    sharedBy: function() {
+        var currentAnalysis = Session.get('currentAnalysis');
+        if(!currentAnalysis || currentAnalysis.owner === Meteor.userId()) {
+            return null;
+        }
+
+        var user = Meteor.users.findOne(currentAnalysis.owner);
+
+        if(!user) {
+            return null;
+        }
+
+        return user.emails[0].address;
+    },
     disableConfigureChart: function() {
         var currentData = Session.get('currentData');
-        return !Boolean(currentData);
+        return ! (
+            Boolean(currentData)
+        );
     },
     disableSave: function() {
         var currentAnalysis = Session.get('currentAnalysis');
-        return !currentAnalysis || !currentAnalysis._id;
+        return ! (
+            currentAnalysis && currentAnalysis._id && currentAnalysis.owner === Meteor.userId()
+        );
+    },
+    disableSharing: function() {
+        var currentAnalysis = Session.get('currentAnalysis');
+        return ! (
+            currentAnalysis && currentAnalysis.owner === Meteor.userId()
+        );
     },
     disableSaveAs: function() {
         var currentAnalysis = Session.get('currentAnalysis');
-        return !currentAnalysis || !currentAnalysis._id;
+        return ! (
+            currentAnalysis
+        );
     },
     disableDelete: function() {
         var currentAnalysis = Session.get('currentAnalysis');
-        return !currentAnalysis || !currentAnalysis._id;
+        return ! (
+            currentAnalysis && currentAnalysis._id && currentAnalysis.owner === Meteor.userId()
+        );
     },
     validationStatus: function(kw) {
         var currentAnalysis = Session.get('currentAnalysis');
@@ -76,6 +104,11 @@ Template.parameters.events = {
         $(".chartModal").modal();
     },
 
+    'click .configure-sharing' : function(event, template) {
+        event.preventDefault();
+        $(".sharingModal").modal();
+    },
+
     'click .save' : function(event, template) {
         var currentAnalysis = Models.Analysis.getCurrent(),
             omit = ['_id'];
@@ -118,6 +151,7 @@ Template.parameters.events = {
 
         // validate, but don't fail due to a missing name
         if(!Schemata.Analysis.namedContext().validate(_.extend(_.omit(currentAnalysis, omit), {name: 'temp'}))) {
+            console.error(Schemata.Analysis.namedContext().invalidKeys());
             bootbox.alert("Invalid analysis: " + _.pluck(Schemata.Analysis.namedContext().invalidKeys(), 'message').join('; '));
             return;
         }

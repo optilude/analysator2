@@ -101,7 +101,7 @@ Models.Analysis = {
     create: function(doc) {
         return {
             owner:            Meteor.userId(),
-            sharedWith:       doc && doc.sharedWith    ? _.clone(doc.sharedWith) : [],
+            sharedWith:       [],
             name:             doc                      ? doc.name : "",
             connectionString: doc                      ? doc.connectionString : "",
             query:            doc                      ? doc.query: "",
@@ -141,6 +141,7 @@ Collections.Analyses.allow({
  */
 
 if(Meteor.isServer) {
+
     Meteor.publish("analyses", function() {
         return Collections.Analyses.find({
             $or: [
@@ -149,6 +150,44 @@ if(Meteor.isServer) {
             ]
         });
     });
+
+    Meteor.publish('sharedUsers', function(analysisId) {
+        check(analysisId, String);
+
+        if(!analysisId) {
+            return null;
+        }
+
+        var analysis = Collections.Analyses.findOne(analysisId);
+        if(!analysis) {
+            return null;
+        }
+
+        var userIds = (analysis.sharedWith || []).slice();
+
+        if(analysis.owner !== this.userId) {
+            userIds.push(analysis.owner);
+        }
+
+        return Meteor.users.find({
+            _id: {$in : userIds}
+        }, {
+            fields: {
+                '_id'           : 1,
+                'username'      : 1,
+                'emails'        : 1,
+                'profile.name'  : 1
+            }
+        });
+    });
+
 } else if(Meteor.isClient) {
+
     Meteor.subscribe("analyses");
+
+    Deps.autorun(function() {
+        var currentAnalysis = Models.Analysis.getCurrent();
+        return Meteor.subscribe("sharedUsers", currentAnalysis && currentAnalysis._id? currentAnalysis._id : null);
+    });
+
 }

@@ -1,7 +1,6 @@
 Features
 --------
 
-[ ] Analysis sharing
 [ ] Dirty flag when navigating away
 
 Bugs

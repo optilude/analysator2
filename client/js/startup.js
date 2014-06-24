@@ -1,41 +1,40 @@
-/* global Collections, Models */
+/* global Collections, Models, RouteController */
 "use strict";
 
 Meteor.startup(function() {
     Session.set('currentData', null);
-
     Models.Analysis.setCurrent(null);
 });
 
 Router.map(function() {
 
-    Router.onBeforeAction('dataNotFound');
     Router.configure({
         layoutTemplate: 'layout',
-        notFoundTemplate: 'notFound'
+        notFoundTemplate: 'notFound',
+
+        onBeforeAction: function(pause) {
+            var self = this;
+
+            if(!this.ready()) {
+                return;
+            }
+
+            var userId = Meteor.userId(),
+                currentRoute = Router.current();
+
+            // Redirect to home page if user is not logged in
+            if(currentRoute && currentRoute.route.name !== 'home' && !userId) {
+                pause();
+                Router.go('home');
+                return;
+            }
+
+            Session.set('dirty', false);
+        }
     });
 
-    // Routes
-
-    Router.onBeforeAction(function(pause) {
-        var self = this;
-
-        if (!this.ready()) {
-            return;
-        }
-
-        var userId = Meteor.userId(),
-            currentRoute = Router.current();
-
-        // Redirect to home page if user is not logged in
-        if(currentRoute && currentRoute.route.name !== 'home' && !userId) {
-            pause();
-            Router.go('home');
-            return;
-        }
-
-        Session.set('dirty', false);
-    });
+    Router.onBeforeAction('dataNotFound');
+    Router.onBeforeAction('loading');
 
     this.route('home', {
         path: '/',
@@ -46,15 +45,19 @@ Router.map(function() {
         path: '/new-analysis',
         template: 'analysis',
         yieldTemplates: {
-            configureChart: {to: 'footer'}
+            analysisFooter: {to: 'footer'}
         },
+
         onRun: function() {
-            Session.set('currentData', null);
-            Models.Analysis.setCurrent(Models.Analysis.create({
-                connectionString: localStorage.defaultConnectionString || "",
-                query: localStorage.deafultQuery || ""
-            }));
+            Deps.nonreactive(function() {
+                Session.set('currentData', null);
+                Models.Analysis.setCurrent(Models.Analysis.create({
+                    connectionString: localStorage.defaultConnectionString || "",
+                    query: localStorage.deafultQuery || ""
+                }));
+            });
         },
+
         data: function() {
             var analysis = null;
 
@@ -71,15 +74,23 @@ Router.map(function() {
         path: '/analysis/:_id',
         template: 'analysis',
         yieldTemplates: {
-            configureChart: {to: 'footer'}
+            analysisFooter: {to: 'footer'}
         },
+
         onRun: function() {
-            Session.set('currentData', null);
+            Deps.nonreactive(function() {
+                Session.set('currentData', null);
+            });
         },
+
         data: function() {
-            var analysis = Collections.Analyses.findOne(this.params._id);
+            var id = this.params._id;
+
+            var analysis = Collections.Analyses.findOne(id);
             Models.Analysis.setCurrent(analysis);
+
             return analysis;
         }
+
     });
 });
