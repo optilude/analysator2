@@ -111,7 +111,7 @@ Router.map(function() {
 
     this.route('adminAccounts', {
         path:'/admin/accounts',
-        template: 'accountsAdmin',
+        template: 'adminAccounts',
         data: {},
         onBeforeAction: function() {
             if(Meteor.loggingIn()) {
