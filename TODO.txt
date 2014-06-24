@@ -1,8 +1,6 @@
 Features
 --------
 
-[ ] Dirty flag when navigating away
-
 Bugs
 ----
 

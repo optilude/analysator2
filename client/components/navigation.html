@@ -22,7 +22,7 @@
 <template name="sidebar">
     {{#if currentUser}}
     <ul class="nav nav-sidebar default">
-        <li class="{{newActive}}"><a href="{{pathFor 'new'}}">New query</a></li>
+        <li class="{{newActive}}"><a href="{{pathFor 'new'}}">New analysis{{#if newActive}}{{#if dirty}}*{{/if}}{{/if}}</a></li>
     </ul>
     <ul class="nav nav-sidebar saved-analyses">
         {{#each savedAnalyses}}

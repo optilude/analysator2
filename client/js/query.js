@@ -1,7 +1,13 @@
 /* global moment, bootbox, Collections, Models, Schemata */
 "use strict";
 
-Template.parameters.helpers({
+Template.analysis.helpers({
+
+    analysisName: function() {
+        var currentAnalysis = Models.Analysis.getCurrent();
+        return currentAnalysis && currentAnalysis.name? currentAnalysis.name : null;
+    },
+
     sharedBy: function() {
         var currentAnalysis = Session.get('currentAnalysis');
         if(!currentAnalysis || currentAnalysis.owner === Meteor.userId()) {
@@ -15,7 +21,11 @@ Template.parameters.helpers({
         }
 
         return user.emails[0].address;
-    },
+    }
+
+});
+
+Template.parameters.helpers({
     disableConfigureChart: function() {
         var currentData = Session.get('currentData');
         return ! (

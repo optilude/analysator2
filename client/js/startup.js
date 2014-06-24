@@ -1,4 +1,4 @@
-/* global Collections, Models, RouteController */
+/* global Collections, Models, bootbox */
 "use strict";
 
 Meteor.startup(function() {
@@ -7,6 +7,21 @@ Meteor.startup(function() {
 });
 
 Router.map(function() {
+
+    var go = Router.go;
+    Router.go = function () {
+        var self = this,
+            args = arguments;
+        if(Session.get('dirty')) {
+            bootbox.confirm("You have unsaved changes, which will be lost if you navigate away. Really leave this page?", function(confirm) {
+                if(confirm) {
+                    go.apply(self, args);
+                }
+            });
+        } else {
+            go.apply(self, args);
+        }
+    };
 
     Router.configure({
         layoutTemplate: 'layout',
