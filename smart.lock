@@ -12,7 +12,9 @@
       "postgresql": {},
       "iron-router": {},
       "collection2": {},
-      "autoform": {}
+      "autoform": {},
+      "roles": {},
+      "accounts-admin-ui-bootstrap-3": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -67,8 +69,18 @@
       },
       "autoform": {
         "git": "https://github.com/aldeed/meteor-autoform.git",
-        "tag": "v0.12.0",
-        "commit": "24b0284425e446f2d88760a81052eefe74a20bbf"
+        "tag": "v0.13.0",
+        "commit": "3f294ddf3ed0acae714d5ceb8a806b25cdcd0197"
+      },
+      "roles": {
+        "git": "https://github.com/alanning/meteor-roles.git",
+        "tag": "v1.2.9",
+        "commit": "969b17fac5dfec66b6b12bfce4e37471d1a241d4"
+      },
+      "accounts-admin-ui-bootstrap-3": {
+        "git": "https://github.com/hharnisc/meteor-accounts-admin-ui-bootstrap-3.git",
+        "tag": "v0.2.6",
+        "commit": "fe74692303daf73d440f2729010bcf1557af62ca"
       },
       "raphael": {
         "git": "https://github.com/chhib/meteor-raphael.git",

@@ -1,4 +1,4 @@
-/* global Collections, Models, bootbox */
+/* global Collections, Models, bootbox, Roles */
 "use strict";
 
 Meteor.startup(function() {
@@ -108,4 +108,18 @@ Router.map(function() {
         }
 
     });
+
+    this.route('adminAccounts', {
+        path:'/admin/accounts',
+        template: 'accountsAdmin',
+        data: {},
+        onBeforeAction: function() {
+            if(Meteor.loggingIn()) {
+                this.render(this.loadingTemplate);
+            } else if(!Roles.userIsInRole(Meteor.user(), ['admin'])) {
+                this.redirect('/');
+            }
+        }
+    });
+
 });

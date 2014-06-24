@@ -17,3 +17,5 @@ postgresql
 iron-router
 collection2
 autoform
+roles
+accounts-admin-ui-bootstrap-3

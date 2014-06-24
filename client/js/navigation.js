@@ -1,4 +1,4 @@
-/* global Collections, Models */
+/* global Collections, Models, Roles */
 "use strict";
 
 Template.sidebar.helpers({
@@ -22,4 +22,14 @@ Template.sidebar.helpers({
             };
         });
     }
+});
+
+Template.header.helpers({
+    isAdmin: function() {
+        return Roles.userIsInRole(Meteor.user(), ['admin']);
+    },
+    adminAccountsActive: function() {
+        var currentRoute = Router.current();
+        return currentRoute && currentRoute.route.name === "adminAccounts"? "active" : null;
+    },
 });
