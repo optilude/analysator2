@@ -1,8 +1,15 @@
 Features
 --------
 
+[ ] Changing analysis name
+[ ] More secure password entry (no plain text)
+
+[ ] Grouping analyses into sets with shared connection strings
+
 Bugs
 ----
+
+[ ] UI for "change password" disappears when clicking in the text box
 
 Architecture
 ------------

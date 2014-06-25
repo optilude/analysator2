@@ -166,7 +166,8 @@ Template.parameters.events = {
             return;
         }
 
-        omit.push('owner');bootbox.prompt("Please choose a name", function(newName) {
+        omit.push('owner');
+        bootbox.prompt("Please choose a name", function(newName) {
             if(!newName) {
                 return;
             }
@@ -180,6 +181,8 @@ Template.parameters.events = {
 
                 newAnalysis._id = id;
                 Models.Analysis.setCurrent(newAnalysis);
+
+                Session.set('dirty', false);
 
                 Router.go('analysis', {_id: id});
             });
@@ -226,8 +229,8 @@ Template.results.helpers({
             return data.fields.map(function(field) {
                 var value = row[field.name];
 
-                if(field.dataTypeID === 1082) { // date columns
-                    value = moment(value).format("MM/DD/YYYY");
+                if(field.dataTypeID === 1082 || field.dataTypeID === 1184) { // date columns
+                    value = moment(value).format("DD/MM/YYYY");
                 }
 
                 return value;
