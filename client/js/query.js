@@ -260,7 +260,7 @@ Template.results.helpers({
             return data.fields.map(function(field) {
                 var value = row[field.name];
 
-                if(field.dataTypeID === 1082 || field.dataTypeID === 1184) { // date columns
+                if(value && (field.dataTypeID === 1082 || field.dataTypeID === 1184)) { // date columns
                     value = moment(value).format("DD/MM/YYYY");
                 }
 
