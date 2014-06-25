@@ -1,13 +1,16 @@
 <template name="analysis">
 
-    <h1 class="page-header">
+<h1 class="page-header">
         {{#if analysisName}}
             {{analysisName}}
         {{else}}
             New analysis
         {{/if}}
         {{#if sharedBy}}<small>shared by {{sharedBy}}</small>{{/if}}
+        {{#unless sharedBy}}<small><span class="edit-name small glyphicon glyphicon-pencil"></span></small>{{/unless}}
     </h1>
+
+
 
     {{> parameters }}
     {{> chart }}

@@ -25,6 +25,37 @@ Template.analysis.helpers({
 
 });
 
+Template.analysis.events({
+
+    'click .edit-name': function() {
+        var currentAnalysis = Models.Analysis.getCurrent();
+
+        bootbox.prompt({
+            title: "Please enter a new name",
+            value: currentAnalysis.name,
+            callback: function(result) {
+            if(!result) {
+                return;
+            }
+
+            currentAnalysis.name = result;
+            Models.Analysis.setCurrent(currentAnalysis);
+
+            Collections.Analyses.update(currentAnalysis._id, {
+                $set: {
+                    name: currentAnalysis.name
+                }
+            }, {}, function(err) {
+                if(err) {
+                    alert("Unexpected error updating record: " + err);
+                    return;
+                }
+            });
+        }});
+    }
+
+});
+
 Template.parameters.helpers({
     disableConfigureChart: function() {
         var currentData = Session.get('currentData');
