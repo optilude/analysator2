@@ -85,7 +85,16 @@ Template.chart.rendered = function() {
             data: results.rows,
             labels: chartSettings.ykeys,
             hideHover: 'auto',
-            dateFormat: chartSettings.parseTime? function(d) { return moment(d).format("DD/MM/YYYY"); } : null,
+            dateFormat: chartSettings.parseTime? function(d) {
+                return moment(d).format("DD/MM/YYYY");
+            } : null,
+            xLabelFormat: function(v) {
+                if(v.label instanceof Date) {
+                    return moment(v.label).format("DD/MM/YYYY");
+                } else {
+                    return v.label;
+                }
+            },
             xLabelAngle: 45
         }));
 
