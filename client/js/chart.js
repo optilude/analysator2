@@ -84,7 +84,7 @@ Template.chart.rendered = function() {
             element: template.$('.chart-area'),
             data: results.rows,
             labels: chartSettings.ykeys,
-            hideHover: 'auto',
+            // hideHover: 'auto',
             dateFormat: chartSettings.parseTime? function(d) {
                 return moment(d).format("DD/MM/YYYY");
             } : null,
@@ -95,7 +95,7 @@ Template.chart.rendered = function() {
                     return v.label;
                 }
             },
-            xLabelAngle: 45
+            xLabelAngle: results.rows.length > 20? 45 : 10
         }));
 
     });
